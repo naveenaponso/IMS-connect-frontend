@@ -35,9 +35,9 @@ const LandingPage = () => {
                 <Box mt={3}>
                     <Button
                         variant="contained"
-                        color="primary"
+                        // color="primary"
                         size="large"
-                        sx={{ m: 1, px: 4, py: 1 }}
+                        sx={{ m: 1, px: 4, py: 1 , backgroundColor: "darkblue"}}
                         onClick={() => navigate("/register")}
                     >
                         Register

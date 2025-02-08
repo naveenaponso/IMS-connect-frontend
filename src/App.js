@@ -1,18 +1,21 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AuthProvider, { AuthContext } from "./context/AuthProvider";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./components/user-management/Login";
+import Register from "./components/user-management/Register";
 import Home from "./components/Home";
-import Profile from "./components/Profile";
+import Profile from "./components/user-management/Profile";
 import LandingPage from "./components/LandingPage";
 import Navbar from "./components/Navbar"; // Import the responsive AppBar
-import { Container } from "@mui/material";
+import { Container, Fade } from "@mui/material";
+import IdeaForm from "./components/idea-management/IdeaForm";
+import IdeaList from "./components/idea-management/IdeaList";
+import { motion } from "framer-motion";
 
 function App() {
     return (
         <AuthProvider>
-            <Router>
+            <Router >
                 <AuthRoutes />
             </Router>
         </AuthProvider>
@@ -21,9 +24,9 @@ function App() {
 
 function AuthRoutes() {
     const { isAuthenticated } = useContext(AuthContext);
-
+    console.log("isAuthenticated", isAuthenticated);
     return (
-        <>
+        <div style={{ background: 'linear-gradient(135deg,rgb(182, 229, 185),rgb(168, 212, 242))' }}>
             {isAuthenticated && <Navbar />} {/* Show Navbar only after login */}
             <Container>
                 <Routes>
@@ -33,6 +36,8 @@ function AuthRoutes() {
                             <Route path="/" element={<Home />} />
                             <Route path="/home" element={<Home />} />
                             <Route path="/profile" element={<Profile />} />
+                            <Route path="/submit-idea" element={<IdeaForm />} />
+                            <Route path="/ideas" element={<IdeaList />} />
                             {/* Redirect unknown paths to home */}
                             <Route path="*" element={<Home />} />
                         </>
@@ -48,7 +53,7 @@ function AuthRoutes() {
                     )}
                 </Routes>
             </Container>
-        </>
+        </div>
     );
 }
 

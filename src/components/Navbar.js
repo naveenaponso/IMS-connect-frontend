@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
-import { AppBar, Toolbar, IconButton, Menu, MenuItem, Badge, Drawer, List, ListItem, ListItemText, Typography } from "@mui/material";
-import { Menu as MenuIcon, Notifications, Settings } from "@mui/icons-material";
+import { AppBar, Toolbar, IconButton, Menu, MenuItem, Badge, Drawer, List, ListItem, ListItemText, Typography, ListItemIcon } from "@mui/material";
+import { Circle, Menu as MenuIcon, Notifications } from "@mui/icons-material";
 import { AuthContext } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { AccountCircle, LogoutRounded } from "@mui/icons-material"; // Import Profile Icon
 
 const Navbar = () => {
     const { logout } = useContext(AuthContext);
@@ -25,17 +26,47 @@ const Navbar = () => {
     const handleSettingsClose = () => setSettingsAnchor(null);
 
     // Mock Notifications (Based on Case Study)
-    const notifications = [
-        "New idea submission from Tokyo office",
-        "Your idea on Carbon Capture is under review",
-        "Collaboration request from Berlin team",
-        "System upgrade scheduled for next week",
+    // const notifications = [
+    //     "New idea submission from Tokyo office",
+    //     "Your idea on Carbon Capture is under review",
+    //     "Collaboration request from Berlin team",
+    //     "System upgrade scheduled for next week",
+    // ];
+
+    const notifications_list = [
+        {
+            id: 1,
+            message: "New idea submission from Tokyo office",
+            is_read: false,
+            created_at: "2023-10-01 10:00 AM",
+        },
+        {
+            id: 2,
+            message: "Your idea on Carbon Capture is under review",
+            is_read: false,
+            created_at: "2023-10-02 11:30 AM",
+        },
+        {
+            id: 3,
+            message: "Collaboration request from Berlin team",
+            is_read: false,
+            created_at: "2023-10-03 09:15 AM",
+        },
+        {
+            id: 4,
+            message: "System upgrade scheduled for next week",
+            is_read: true,
+            created_at: "2023-10-04 03:45 PM",
+        },
     ];
+
+    // Count Unread Notifications
+    const unreadCount = notifications_list.filter((notification) => !notification.is_read).length;
 
     return (
         <>
             {/* Top AppBar */}
-            <AppBar position="static">
+            <AppBar position="fixed" sx={{ backgroundColor: "darkblue" }}>
                 <Toolbar>
                     {/* Mobile Menu Icon */}
                     <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerToggle} sx={{ display: { xs: "block", md: "none" } }}>
@@ -49,15 +80,20 @@ const Navbar = () => {
 
                     {/* Notification Icon */}
                     <IconButton color="inherit" onClick={handleNotificationClick}>
-                        <Badge badgeContent={notifications.length} color="error">
+                        <Badge badgeContent={unreadCount} color="error">
                             <Notifications />
                         </Badge>
                     </IconButton>
 
-                    {/* Settings Icon */}
+                    {/* Profile Icon */}
                     <IconButton color="inherit" onClick={handleSettingsClick}>
-                        <Settings />
+                        <AccountCircle /> {/* Profile Icon */}
                     </IconButton>
+
+                    {/* Settings Icon */}
+                    {/* <IconButton color="inherit" onClick={handleSettingsClick}>
+                        <Settings />
+                    </IconButton> */}
                 </Toolbar>
             </AppBar>
 
@@ -68,21 +104,40 @@ const Navbar = () => {
                         <ListItemText primary="Home" />
                     </ListItem>
                     <ListItem button onClick={() => navigate("/profile")}>
-                        <ListItemText primary="Profile" />
+                        <AccountCircle /> <ListItemText primary="Profile" />
                     </ListItem>
                     <ListItem button onClick={logout}>
-                        <ListItemText primary="Logout" />
+                        <LogoutRounded /> <ListItemText primary="Logout" />
                     </ListItem>
                 </List>
             </Drawer>
 
             {/* Notifications Popup */}
             <Menu anchorEl={notificationAnchor} open={openNotifications} onClose={handleNotificationClose}>
-                {notifications.length > 0 ? (
-                    notifications.map((notification, index) => (
-                        <MenuItem key={index} onClick={handleNotificationClose}>
-                            {notification}
-                        </MenuItem>
+                {notifications_list.length > 0 ? (
+                    notifications_list.map((notification, index) => (
+                        <ListItem key={notification.id} sx={{ bgcolor: notification.is_read ? "background.paper" : "action.hover" }}>
+                                {/* Unread Indicator */}
+                                {!notification.is_read && (
+                                    <ListItemIcon sx={{ minWidth: 30 }}>
+                                        <Circle sx={{ fontSize: 10, color: "primary.main" }} />
+                                    </ListItemIcon>
+                                )}
+
+                                {/* Notification Content */}
+                                <ListItemText
+                                    primary={notification.message}
+                                    secondary={notification.created_at}
+                                    primaryTypographyProps={{
+                                        fontWeight: notification.is_read ? "normal" : "bold",
+                                    }}
+                                    secondaryTypographyProps={{
+                                        color: "textSecondary",
+                                        fontSize: 12,
+                                    }}
+                                />
+                            </ListItem>
+
                     ))
                 ) : (
                     <MenuItem onClick={handleNotificationClose}>No new notifications</MenuItem>
@@ -91,9 +146,12 @@ const Navbar = () => {
 
             {/* Settings Dropdown */}
             <Menu anchorEl={settingsAnchor} open={openSettings} onClose={handleSettingsClose}>
-                <MenuItem onClick={() => { navigate("/profile"); handleSettingsClose(); }}>Profile</MenuItem>
-                <MenuItem onClick={() => { logout(); handleSettingsClose(); }}>Logout</MenuItem>
+                <MenuItem onClick={() => { navigate("/profile"); handleSettingsClose(); }}><AccountCircle /> Profile</MenuItem>
+                <MenuItem onClick={() => { logout(); handleSettingsClose(); }}> <LogoutRounded /> Logout</MenuItem>
             </Menu>
+            <br></br>
+            <br></br>
+            <br></br>
         </>
     );
 };

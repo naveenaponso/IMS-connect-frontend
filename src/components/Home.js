@@ -7,7 +7,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     return (
-        <Box sx={{ bgcolor: "#f4f6f8", minHeight: "90vh", py: 5 }}>
+        <Box sx={{  minHeight: "90vh", py: 5 }}>
             <Container>
                 {/* Header Section */}
                 <Typography variant="h3" align="center" fontWeight="bold" gutterBottom>
@@ -25,13 +25,13 @@ const Home = () => {
                             <CardContent>
                                 <Lightbulb sx={{ fontSize: 50, color: "#1976d2" }} />
                                 <Typography variant="h5" fontWeight="bold" gutterBottom>
-                                    Submit Your Innovative Ideas
+                                    Explore Innovative Ideas
                                 </Typography>
                                 <Typography color="textSecondary">
                                     Share groundbreaking solutions for sustainability and renewable energy.
                                 </Typography>
                                 <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={() => navigate("/ideas")}>
-                                    Submit Idea
+                                    Explore Ideas
                                 </Button>
                             </CardContent>
                         </Card>

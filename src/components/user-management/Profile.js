@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Typography, TextField, Button, Box, Avatar, Grid, Card, CardContent, Alert } from "@mui/material";
 import { Edit, Save, Lock, UploadFile } from "@mui/icons-material";
-import api from "../services/api";
+import api from "../../services/api";
 
 const Profile = () => {
     const [profile, setProfile] = useState({});
@@ -15,7 +15,7 @@ const Profile = () => {
         // Fetch profile details
         const fetchProfile = async () => {
             try {
-                const response = await api.get("/profile");
+                const response = await api.get("/users/profile");
                 setProfile(response.data.user);
             } catch (err) {
                 setError("Failed to fetch profile");
@@ -32,7 +32,7 @@ const Profile = () => {
 
     const handleUpdate = async () => {
         try {
-            await api.put("/profile", profile);
+            await api.put("/users/profile", profile);
             setMessage("Profile updated successfully");
             setEditable(false);
         } catch (err) {
@@ -42,7 +42,7 @@ const Profile = () => {
 
     const handlePasswordReset = async () => {
         try {
-            await api.put("/profile/reset-password", { newPassword });
+            await api.put("/users/profile/reset-password", { newPassword });
             setMessage("Password updated successfully");
             setNewPassword("");
         } catch (err) {
