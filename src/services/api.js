@@ -9,7 +9,7 @@ import axios from "axios";
 
 // Production
 const api = axios.create({
-    baseURL: "https://ims-connect-backend-h5qm.onrender.com", // Use Render backend URL
+    baseURL: "https://ims-connect-backend-h5qm.onrender.com/api", // Use Render backend URL
     headers: { "Content-Type": "application/json" }
 });
 
