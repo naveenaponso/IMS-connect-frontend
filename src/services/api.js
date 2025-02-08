@@ -1,10 +1,16 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api";
+// Development
+// const api = axios.create({
+//     baseURL: http://localhost:5000/api,
+//     headers: { "Content-Type": "application/json" },
+// });
 
+
+// Production
 const api = axios.create({
-    baseURL: API_URL,
-    headers: { "Content-Type": "application/json" },
+    baseURL: "https://ims-connect-backend-h5qm.onrender.com", // Use Render backend URL
+    headers: { "Content-Type": "application/json" }
 });
 
 // Attach Authorization token to every request
