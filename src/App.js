@@ -7,10 +7,12 @@ import Home from "./components/Home";
 import Profile from "./components/user-management/Profile";
 import LandingPage from "./components/LandingPage";
 import Navbar from "./components/Navbar"; // Import the responsive AppBar
-import { Container, Fade } from "@mui/material";
+import { Container } from "@mui/material";
 import IdeaForm from "./components/idea-management/IdeaForm";
 import IdeaList from "./components/idea-management/IdeaList";
-import { motion } from "framer-motion";
+import MyCollaborations from "./components/collaboration-management/MyCollaborations";
+import AssignTeam from "./components/collaboration-management/AssignTeam";
+import Collaborations from "./components/collaboration-management/Collaborations";
 
 function App() {
     return (
@@ -38,6 +40,7 @@ function AuthRoutes() {
                             <Route path="/profile" element={<Profile />} />
                             <Route path="/submit-idea" element={<IdeaForm />} />
                             <Route path="/ideas" element={<IdeaList />} />
+                            <Route path="/collaborations" element={<Collaborations />} />
                             {/* Redirect unknown paths to home */}
                             <Route path="*" element={<Home />} />
                         </>

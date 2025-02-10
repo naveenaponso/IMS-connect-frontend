@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { TextField, Button, Typography, Alert, Card, CardContent, Box, Link } from "@mui/material";
+import { TextField, Button, Typography, Alert, Card, CardContent, Box, Link, Snackbar } from "@mui/material";
 import { Person, Email, Lock } from "@mui/icons-material";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import landingImage from "../../assets/landing-image.webp"; // Add an image in the assets folder
 
 const Register = () => {
-    const [formData, setFormData] = useState({ name: "", email: "", password: "", location_id: "" });
-    const [retypedPassword, setRetypedPassword] = useState(""); // State for re-typed password
+    const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+    const [retypedPassword, setRetypedPassword] = useState("");
     const [error, setError] = useState("");
-    const [passwordError, setPasswordError] = useState(""); // State for password mismatch error
+    const [passwordError, setPasswordError] = useState("");
+    const [successMessage, setSuccessMessage] = useState(""); // State for success message
+    const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar visibility
     const navigate = useNavigate();
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,12 +22,18 @@ const Register = () => {
         // Validate if passwords match
         if (formData.password !== retypedPassword) {
             setPasswordError("Passwords do not match");
-            return; // Stop form submission if passwords don't match
+            return;
         }
 
         try {
             await api.post("/users/register", formData);
-            navigate("/login");
+            setSuccessMessage("Registration successful! Redirecting to login...");
+            setSnackbarOpen(true);
+
+            // Wait for 2 seconds before redirecting to login
+            setTimeout(() => {
+                navigate("/login");
+            }, 2000);
         } catch (err) {
             setError(err.response?.data?.message || "Registration failed");
         }
@@ -37,7 +45,7 @@ const Register = () => {
                 <CardContent>
                     <Typography variant="h4" align="center" gutterBottom>IMS - Connect Register</Typography>
                     {error && <Alert severity="error">{error}</Alert>}
-                    {passwordError && <Alert severity="error">{passwordError}</Alert>} {/* Display password mismatch error */}
+                    {passwordError && <Alert severity="error">{passwordError}</Alert>}
                     <form onSubmit={handleSubmit}>
                         <TextField fullWidth margin="normal" label="Name" name="name" InputProps={{ startAdornment: <Person /> }} onChange={handleChange} required />
                         <TextField fullWidth margin="normal" label="Email" name="email" type="email" InputProps={{ startAdornment: <Email /> }} onChange={handleChange} required />
@@ -49,10 +57,9 @@ const Register = () => {
                             name="retypedPassword"
                             type="password"
                             InputProps={{ startAdornment: <Lock /> }}
-                            onChange={(e) => setRetypedPassword(e.target.value)} // Update re-typed password state
+                            onChange={(e) => setRetypedPassword(e.target.value)}
                             required
                         />
-                        {/* <TextField fullWidth margin="normal" label="Location ID" name="location_id" InputProps={{ startAdornment: <LocationOn /> }} onChange={handleChange} required /> */}
                         <Button variant="contained" sx={{ backgroundColor: "darkblue", mt: 2 }} type="submit" fullWidth>Register</Button>
                     </form>
 
@@ -64,6 +71,18 @@ const Register = () => {
                     </Typography>
                 </CardContent>
             </Card>
+
+            {/* Success Snackbar */}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={2000} // 2 seconds before closing
+                onClose={() => setSnackbarOpen(false)}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+                <Alert onClose={() => setSnackbarOpen(false)} severity="success" sx={{ width: "100%" }}>
+                    {successMessage}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
     Dialog,
     DialogTitle,
@@ -15,7 +15,7 @@ import CommentSection from "./CommentSection";
 import { jwtDecode } from "jwt-decode";
 
 const IdeaDetail = ({ idea, onClose }) => {
-    const [token, setToken] = useState(localStorage.getItem("token"));
+    const [token] = useState(localStorage.getItem("token"));
     const decoded = jwtDecode(token);
     const user={id: decoded.id, role: decoded.role};
     // console.log('user', user) // Get     user info from context
@@ -68,7 +68,7 @@ const IdeaDetail = ({ idea, onClose }) => {
                     <Typography variant="body1" sx={{ mt: 2 }}>
                         {idea.description}
                     </Typography>
-                    <Typography variant="h6" color="primary" sx={{ mt: 2 }}>
+                    <Typography variant="h6" color="secondary" sx={{ mt: 2 }}>
                         Status: {status}
                     </Typography>
                     <Typography sx={{ mt: 1 }}>Votes: {voteCount}</Typography>

@@ -10,7 +10,7 @@ const IdeaList = () => {
     // const [error, setError] = useState("");
     const [toastOpen, setToastOpen] = useState(false); // State for toast visibility
     const [toastMessage, setToastMessage] = useState(""); // State for toast message
-    const [toastSeverity, setToastSeverity] = useState("error"); // State for toast severity (error, success, etc.)
+    const [toastSeverity] = useState("error"); // State for toast severity (error, success, etc.)
 
     const [selectedIdea, setSelectedIdea] = useState(null); // Track selected idea
     const [openDialog, setOpenDialog] = useState(false); // Idea submission dialog

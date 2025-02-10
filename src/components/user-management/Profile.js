@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, TextField, Button, Box, Avatar, Grid, Card, CardContent, Alert } from "@mui/material";
-import { Edit, Save, Lock, UploadFile } from "@mui/icons-material";
+import {
+    Container,
+    Typography,
+    TextField,
+    Button,
+    Box,
+    Avatar,
+    Grid,
+    Card,
+    CardContent,
+    Alert,
+    Divider,
+    InputAdornment,
+} from "@mui/material";
+import { Edit, Save, Lock, UploadFile, Person, Email, Cake, Phone, Work, LocationOn, Flag, Public } from "@mui/icons-material";
 import api from "../../services/api";
 
 const Profile = () => {
@@ -72,42 +85,217 @@ const Profile = () => {
                     {error && <Alert severity="error">{error}</Alert>}
                     {message && <Alert severity="success">{message}</Alert>}
 
-                    <Grid container spacing={3} alignItems="center">
-                        {/* Profile Picture */}
-                        <Grid item xs={12} md={4} sx={{ textAlign: "center" }}>
-                            <Avatar
-                                src={profilePic || "https://via.placeholder.com/150"} // Default image
-                                sx={{ width: 120, height: 120, margin: "auto", mb: 2 }}
+                    {/* Profile Picture Section */}
+                    <Box sx={{ textAlign: "center", mb: 4 }}>
+                        <Avatar
+                            src={profilePic || "https://via.placeholder.com/150"}
+                            sx={{ width: 120, height: 120, margin: "auto", mb: 2 }}
+                        />
+                        <input
+                            accept="image/*"
+                            type="file"
+                            id="upload-button"
+                            style={{ display: "none" }}
+                            onChange={handleProfilePicUpload}
+                        />
+                        <label htmlFor="upload-button">
+                            <Button variant="contained" component="span" startIcon={<UploadFile />}>
+                                Upload
+                            </Button>
+                        </label>
+                    </Box>
+
+                    {/* Personal Information Section */}
+                    <Typography variant="h5" fontWeight="bold" gutterBottom>
+                        Personal Information
+                    </Typography>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Name"
+                                name="name"
+                                value={profile.name || ""}
+                                onChange={handleChange}
+                                disabled={!editable}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Person />
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
-                            <input
-                                accept="image/*"
-                                type="file"
-                                id="upload-button"
-                                style={{ display: "none" }}
-                                onChange={handleProfilePicUpload}
-                            />
-                            <label htmlFor="upload-button">
-                                <Button variant="contained" component="span" startIcon={<UploadFile />}>
-                                    Upload
-                                </Button>
-                            </label>
                         </Grid>
-
-                        {/* Profile Details */}
-                        <Grid item xs={12} md={8}>
-                            {/* Read-Only Fields */}
-                            <TextField fullWidth margin="normal" label="Email" value={profile.email || ""} InputProps={{ readOnly: true }} />
-                            <TextField fullWidth margin="normal" label="Role" value={profile.role || ""} InputProps={{ readOnly: true }} />
-                            <TextField fullWidth margin="normal" label="Joined On" value={profile.created_at || ""} InputProps={{ readOnly: true }} />
-
-                            {/* Editable Fields */}
-                            <TextField fullWidth margin="normal" label="Name" name="name" value={profile.name || ""} onChange={handleChange} disabled={!editable} />
-                            <TextField fullWidth margin="normal" label="Location ID" name="location_id" value={profile.location_id || ""} onChange={handleChange} disabled={!editable} />
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Email"
+                                value={profile.email || ""}
+                                InputProps={{
+                                    readOnly: true,
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Email />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Birthdate"
+                                name="birthdate"
+                                value={profile.birthdate || ""}
+                                onChange={handleChange}
+                                disabled={!editable}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Cake />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Phone"
+                                name="phone"
+                                value={profile.phone || ""}
+                                onChange={handleChange}
+                                disabled={!editable}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Phone />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
                         </Grid>
                     </Grid>
 
-                    {/* Buttons for Editing */}
-                    <Box mt={2} textAlign="center">
+                    <Divider sx={{ my: 4 }} />
+
+                    {/* Employment Information Section */}
+                    <Typography variant="h5" fontWeight="bold" gutterBottom>
+                        Employment Information
+                    </Typography>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Role"
+                                value={profile.role || ""}
+                                InputProps={{
+                                    readOnly: true,
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Work />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Hire Date"
+                                value={profile.hire_date || ""}
+                                InputProps={{
+                                    readOnly: true,
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Work />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Branch"
+                                value={profile.branch_name || ""}
+                                InputProps={{
+                                    readOnly: true,
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <LocationOn />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Region"
+                                value={profile.region_name || ""}
+                                InputProps={{
+                                    readOnly: true,
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Public />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="Country"
+                                value={profile.country_name || ""}
+                                InputProps={{
+                                    readOnly: true,
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Flag />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+
+                    <Divider sx={{ my: 4 }} />
+
+                    {/* Password Reset Section */}
+                    <Typography variant="h5" fontWeight="bold" gutterBottom>
+                        Reset Password
+                    </Typography>
+                    <Grid container spacing={2} alignItems="center">
+                        <Grid item xs={12} md={8}>
+                            <TextField
+                                fullWidth
+                                type="password"
+                                label="New Password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <Button variant="contained" color="error" startIcon={<Lock />} onClick={handlePasswordReset}>
+                                Reset Password
+                            </Button>
+                        </Grid>
+                    </Grid>
+
+                    {/* Edit/Save Buttons */}
+                    <Box mt={4} textAlign="center">
                         {editable ? (
                             <Button variant="contained" color="success" startIcon={<Save />} onClick={handleUpdate} sx={{ mx: 1 }}>
                                 Save Changes
@@ -118,24 +306,7 @@ const Profile = () => {
                             </Button>
                         )}
                     </Box>
-
-                    {/* Password Reset Section */}
-                    <Box mt={4} textAlign="center">
-                        <Typography variant="h5" fontWeight="bold" gutterBottom>
-                            Reset Password
-                        </Typography>
-                        <Grid container spacing={2} justifyContent="center">
-                            <Grid item xs={12} md={6}>
-                                <TextField fullWidth type="password" label="New Password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-                            </Grid>
-                            <Grid item xs={12} md={4}>
-                                <Button variant="contained" color="error" startIcon={<Lock />} onClick={handlePasswordReset}>
-                                    Reset Password
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </CardContent>
+                </CardContent> 
             </Card>
         </Container>
     );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button, Container, Typography, Alert, MenuItem } from "@mui/material";
+import { TextField, Button, Container, Alert, MenuItem } from "@mui/material";
 import api from "../../services/api";
 
 const categories = ["Renewable Energy", "Urban Development", "Sustainability", "Water Conservation", "Others"];

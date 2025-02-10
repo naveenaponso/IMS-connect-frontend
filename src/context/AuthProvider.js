@@ -6,7 +6,7 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [user, setUser] = useState(null);
+    // const [user, setUser] = useState(null);
 
     useEffect(() => {
         const validateToken = () => {
@@ -48,9 +48,9 @@ const AuthProvider = ({ children }) => {
         localStorage.setItem("token", jwtToken);
         setToken(jwtToken);
         setIsAuthenticated(true);
-        const decoded = jwtDecode(token); // Decode token to get user data
-        setUser({ id: decoded.id, role: decoded.role });
-        console.log("decoded", decoded);
+        // const decoded = jwtDecode(token); // Decode token to get user data
+        // setUser({ id: decoded.id, role: decoded.role });
+        // console.log("decoded", decoded);
         
     };
 

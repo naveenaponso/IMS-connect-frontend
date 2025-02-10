@@ -49,7 +49,7 @@ const Home = () => {
                                     Connect with professionals from different regions to develop ideas.
                                 </Typography>
                                 <Button variant="contained" color="success" sx={{ mt: 2 }} onClick={() => navigate("/collaborations")}>
-                                    Join Collaboration
+                                    Explore Collaborations
                                 </Button>
                             </CardContent>
                         </Card>
