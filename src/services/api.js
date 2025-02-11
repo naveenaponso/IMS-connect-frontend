@@ -1,17 +1,17 @@
 import axios from "axios";
 
-// // // Development
-// const api = axios.create({
-//     baseURL: "http://localhost:5000/api",
-//     headers: { "Content-Type": "application/json" },
-// });
-
-
-// Production
+// // Development
 const api = axios.create({
-    baseURL: "https://ims-connect-backend-h5qm.onrender.com/api", // Use Render backend URL
-    headers: { "Content-Type": "application/json" }
+    baseURL: "http://localhost:5000/api",
+    headers: { "Content-Type": "application/json" },
 });
+
+
+// // Production
+// const api = axios.create({
+//     baseURL: "https://ims-connect-backend-h5qm.onrender.com/api", // Use Render backend URL
+//     headers: { "Content-Type": "application/json" }
+// });
 
 // Attach Authorization token to every request
 api.interceptors.request.use((config) => {

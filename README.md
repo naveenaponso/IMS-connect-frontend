@@ -68,3 +68,40 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+## Project Structure
+
+The project directory structure is as follows:
+
+```
+frontend/
+├── node_modules/
+├── public/
+│   ├── index.html
+│   └── favicon.ico
+├── src/
+│   ├── components/
+│   │   └── App.js
+│   │   └── App.js
+│   │   └── App.js
+│   │   └── App.js
+│   │   └── App.js
+│   │   └── App.js
+│   │   └── App.js
+│   ├── index.js
+│   ├── App.css
+│   └── index.css
+├── .gitignore
+├── package.json
+├── README.md
+└── yarn.lock
+```
+
+- `node_modules/`: Contains all npm packages installed.
+- `public/`: Contains the static files, including the HTML file where the React app mounts.
+- `src/`: Contains the React components and styles.
+- `.gitignore`: Specifies which files and directories to ignore in version control.
+- `package.json`: Lists the project dependencies and scripts.
+- `README.md`: Project documentation.
+- `yarn.lock`: Ensures consistent installs across environments.

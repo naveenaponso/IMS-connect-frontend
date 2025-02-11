@@ -7,7 +7,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     return (
-        <Box sx={{  minHeight: "90vh", py: 5 }}>
+        <Box sx={{ minHeight: "90vh", py: 5 }}>
             <Container>
                 {/* Header Section */}
                 <Typography variant="h3" align="center" fontWeight="bold" gutterBottom>
@@ -28,28 +28,10 @@ const Home = () => {
                                     Explore Innovative Ideas
                                 </Typography>
                                 <Typography color="textSecondary">
-                                    Share groundbreaking solutions for sustainability and renewable energy.
+                                    Share groundbreaking ideas with your innovation.
                                 </Typography>
                                 <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={() => navigate("/ideas")}>
                                     Explore Ideas
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-
-                    {/* Collaboration */}
-                    <Grid item xs={12} md={6}>
-                        <Card sx={{ p: 2, boxShadow: 3, bgcolor: "#ffffff" }}>
-                            <CardContent>
-                                <People sx={{ fontSize: 50, color: "#28a745" }} />
-                                <Typography variant="h5" fontWeight="bold" gutterBottom>
-                                    Collaborate with Teams
-                                </Typography>
-                                <Typography color="textSecondary">
-                                    Connect with professionals from different regions to develop ideas.
-                                </Typography>
-                                <Button variant="contained" color="success" sx={{ mt: 2 }} onClick={() => navigate("/collaborations")}>
-                                    Explore Collaborations
                                 </Button>
                             </CardContent>
                         </Card>
@@ -68,6 +50,24 @@ const Home = () => {
                                 </Typography>
                                 <Button variant="contained" color="warning" sx={{ mt: 2 }} onClick={() => navigate("/incentives")}>
                                     View Incentives
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+
+                    {/* Collaboration */}
+                    <Grid item xs={12} md={6}>
+                        <Card sx={{ p: 2, boxShadow: 3, bgcolor: "#ffffff" }}>
+                            <CardContent>
+                                <People sx={{ fontSize: 50, color: "#28a745" }} />
+                                <Typography variant="h5" fontWeight="bold" gutterBottom>
+                                    Collaborate with Teams
+                                </Typography>
+                                <Typography color="textSecondary">
+                                    Collaborate with collegues to develop ideas.
+                                </Typography>
+                                <Button variant="contained" color="success" sx={{ mt: 2 }} onClick={() => navigate("/collaborations")}>
+                                    Explore Collaborations
                                 </Button>
                             </CardContent>
                         </Card>

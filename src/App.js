@@ -13,6 +13,7 @@ import IdeaList from "./components/idea-management/IdeaList";
 import MyCollaborations from "./components/collaboration-management/MyCollaborations";
 import AssignTeam from "./components/collaboration-management/AssignTeam";
 import Collaborations from "./components/collaboration-management/Collaborations";
+import Incentives from "./components/incentive-management/Incentive";
 
 function App() {
     return (
@@ -28,7 +29,10 @@ function AuthRoutes() {
     const { isAuthenticated } = useContext(AuthContext);
     console.log("isAuthenticated", isAuthenticated);
     return (
-        <div style={{ background: 'linear-gradient(135deg,rgb(182, 229, 185),rgb(168, 212, 242))' }}>
+        <div style={{
+            background: 'linear-gradient(135deg, rgb(168, 212, 242),  rgb(164, 219, 168), rgb(239, 219, 155), rgb(254, 161, 164))',
+            minHeight: '100vh'
+        }}>
             {isAuthenticated && <Navbar />} {/* Show Navbar only after login */}
             <Container>
                 <Routes>
@@ -41,6 +45,7 @@ function AuthRoutes() {
                             <Route path="/submit-idea" element={<IdeaForm />} />
                             <Route path="/ideas" element={<IdeaList />} />
                             <Route path="/collaborations" element={<Collaborations />} />
+                            <Route path="/incentives" element={<Incentives />} />
                             {/* Redirect unknown paths to home */}
                             <Route path="*" element={<Home />} />
                         </>

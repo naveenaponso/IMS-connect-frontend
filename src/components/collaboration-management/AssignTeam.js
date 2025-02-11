@@ -14,9 +14,10 @@ import {
     Typography,
     Snackbar,
     Alert,
+    Autocomplete, // Import Autocomplete
 } from "@mui/material";
 import api from "../../services/api";
- 
+
 const AssignTeam = ({ ideaId, open, onClose, users }) => {
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [role, setRole] = useState("Contributor");
@@ -33,7 +34,7 @@ const AssignTeam = ({ ideaId, open, onClose, users }) => {
         }
 
         try {
-            await api.post("/collaborations/assign", { idea_id: ideaId, user_ids: selectedUsers, role });
+            await api.post("/collaborations/assign", { idea_id: ideaId, user_ids: selectedUsers.map(user => user.id), role });
             setSnackbarMessage("Team assigned successfully!");
             setSnackbarSeverity("success");
             setSnackbarOpen(true);
@@ -57,29 +58,37 @@ const AssignTeam = ({ ideaId, open, onClose, users }) => {
             <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
                 <DialogTitle>Assign Team to Idea</DialogTitle>
                 <DialogContent>
+                    {/* Role Dropdown with Fixed Floating Label */}
                     <FormControl fullWidth margin="normal">
-                        <InputLabel>Team Role</InputLabel>
-                        <Select value={role} onChange={(e) => setRole(e.target.value)}>
+                        <InputLabel id="role-label">Team Role</InputLabel>
+                        <Select
+                            labelId="role-label"
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                            label="Team Role" // Add label for floating behavior
+                        >
                             <MenuItem value="Contributor">Contributor</MenuItem>
                             <MenuItem value="Team Lead">Team Lead</MenuItem>
                         </Select>
                     </FormControl>
 
-                    <FormControl fullWidth margin="normal">
-                        <InputLabel>Select Employees</InputLabel>
-                        <Select
-                            multiple
-                            value={selectedUsers}
-                            onChange={(e) => setSelectedUsers(e.target.value)}
-                            renderValue={(selected) => selected.map((id) => users.find((user) => user.id === id)?.name).join(", ")}
-                        >
-                            {users && users.map((user) => (
-                                <MenuItem key={user.id} value={user.id}>
-                                    {user.name} ({user.role})
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    {/* Autocomplete for Selecting Users */}
+                    <Autocomplete
+                        multiple
+                        options={users || []}
+                        getOptionLabel={(user) => `${user.name} (${user.role})`}
+                        value={selectedUsers}
+                        onChange={(event, newValue) => setSelectedUsers(newValue)}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Select Employees"
+                                margin="normal"
+                                fullWidth
+                                placeholder="Search users..."
+                            />
+                        )}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onClose} color="secondary">Cancel</Button>
@@ -90,7 +99,7 @@ const AssignTeam = ({ ideaId, open, onClose, users }) => {
             {/* Snackbar for Error and Success Messages */}
             <Snackbar
                 open={snackbarOpen}
-                autoHideDuration={6000} // Auto-hide after 6 seconds
+                autoHideDuration={3000} // Auto-hide after 6 seconds
                 onClose={handleCloseSnackbar}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }} // Position the snackbar
             >

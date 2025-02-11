@@ -1,13 +1,28 @@
 import React, { useState, useContext } from "react";
-import { AppBar, Toolbar, IconButton, Menu, MenuItem, Badge, Drawer, List, ListItem, ListItemText, Typography, ListItemIcon } from "@mui/material";
-import { Circle, Menu as MenuIcon, Notifications } from "@mui/icons-material";
+import {
+    AppBar,
+    Toolbar,
+    IconButton,
+    Menu,
+    MenuItem,
+    Badge,
+    Drawer,
+    List,
+    ListItem,
+    ListItemText,
+    Typography,
+    ListItemIcon,
+} from "@mui/material";
+import { Circle, Menu as MenuIcon, Notifications, ArrowBack } from "@mui/icons-material"; // Import ArrowBack icon
 import { AuthContext } from "../context/AuthProvider";
-import { useNavigate } from "react-router-dom";
-import { AccountCircle, LogoutRounded } from "@mui/icons-material"; // Import Profile Icon
+import { useNavigate, useLocation } from "react-router-dom"; // Import useLocation
+import { AccountCircle, LogoutRounded } from "@mui/icons-material";
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
     const { logout } = useContext(AuthContext);
     const navigate = useNavigate();
+    const location = useLocation(); // Get current location
 
     // State for Mobile Menu (Drawer)
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -25,14 +40,11 @@ const Navbar = () => {
     const handleSettingsClick = (event) => setSettingsAnchor(event.currentTarget);
     const handleSettingsClose = () => setSettingsAnchor(null);
 
-    // Mock Notifications (Based on Case Study)
-    // const notifications = [
-    //     "New idea submission from Tokyo office",
-    //     "Your idea on Carbon Capture is under review",
-    //     "Collaboration request from Berlin team",
-    //     "System upgrade scheduled for next week",
-    // ];
-
+    const token = localStorage.getItem("token");
+    const decoded = jwtDecode(token); // Decode token to get user data
+    console.log("decoded", decoded);
+    const email = decoded.email;
+    // Mock Notifications
     const notifications_list = [
         {
             id: 1,
@@ -66,15 +78,26 @@ const Navbar = () => {
     return (
         <>
             {/* Top AppBar */}
-            <AppBar position="fixed" sx={{ backgroundColor: "darkblue" }}>
+            <AppBar position="fixed" sx={{ backgroundColor: "rgb(55, 17, 85)" }}>
                 <Toolbar>
+                    {/* Back Button (Visible only when not on the home page) */}
+                    {location.pathname !== "/" && (
+                        <IconButton edge="start" color="inherit" onClick={() => navigate("/")} sx={{ mr: 2 }}>
+                            <ArrowBack /> {/* Back icon */}
+                        </IconButton>
+                    )}
+
                     {/* Mobile Menu Icon */}
                     <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerToggle} sx={{ display: { xs: "block", md: "none" } }}>
                         <MenuIcon />
                     </IconButton>
 
-                    {/* App Title */}
-                    <Typography variant="h6" sx={{ flexGrow: 1, textAlign: { xs: "center", md: "left" } }} onClick={() => navigate("/")}>
+                    {/* App Title - Clickable */}
+                    <Typography
+                        variant="h6"
+                        sx={{ flexGrow: 1, textAlign: { xs: "center", md: "left" }, cursor: "pointer" }}
+                        onClick={() => navigate("/")}
+                    >
                         IMS-Connect
                     </Typography>
 
@@ -84,16 +107,18 @@ const Navbar = () => {
                             <Notifications />
                         </Badge>
                     </IconButton>
-
+                    <Typography
+                        variant="h6"
+                    >
+                        {email}
+                    </Typography>
                     {/* Profile Icon */}
                     <IconButton color="inherit" onClick={handleSettingsClick}>
-                        <AccountCircle /> {/* Profile Icon */}
-                    </IconButton>
 
-                    {/* Settings Icon */}
-                    {/* <IconButton color="inherit" onClick={handleSettingsClick}>
-                        <Settings />
-                    </IconButton> */}
+
+
+                        <AccountCircle />
+                    </IconButton>
                 </Toolbar>
             </AppBar>
 
@@ -115,29 +140,28 @@ const Navbar = () => {
             {/* Notifications Popup */}
             <Menu anchorEl={notificationAnchor} open={openNotifications} onClose={handleNotificationClose}>
                 {notifications_list.length > 0 ? (
-                    notifications_list.map((notification, index) => (
+                    notifications_list.map((notification) => (
                         <ListItem key={notification.id} sx={{ bgcolor: notification.is_read ? "background.paper" : "action.hover" }}>
-                                {/* Unread Indicator */}
-                                {!notification.is_read && (
-                                    <ListItemIcon sx={{ minWidth: 30 }}>
-                                        <Circle sx={{ fontSize: 10, color: "primary.main" }} />
-                                    </ListItemIcon>
-                                )}
+                            {/* Unread Indicator */}
+                            {!notification.is_read && (
+                                <ListItemIcon sx={{ minWidth: 30 }}>
+                                    <Circle sx={{ fontSize: 10, color: "primary.main" }} />
+                                </ListItemIcon>
+                            )}
 
-                                {/* Notification Content */}
-                                <ListItemText
-                                    primary={notification.message}
-                                    secondary={notification.created_at}
-                                    primaryTypographyProps={{
-                                        fontWeight: notification.is_read ? "normal" : "bold",
-                                    }}
-                                    secondaryTypographyProps={{
-                                        color: "textSecondary",
-                                        fontSize: 12,
-                                    }}
-                                />
-                            </ListItem>
-
+                            {/* Notification Content */}
+                            <ListItemText
+                                primary={notification.message}
+                                secondary={notification.created_at}
+                                primaryTypographyProps={{
+                                    fontWeight: notification.is_read ? "normal" : "bold",
+                                }}
+                                secondaryTypographyProps={{
+                                    color: "textSecondary",
+                                    fontSize: 12,
+                                }}
+                            />
+                        </ListItem>
                     ))
                 ) : (
                     <MenuItem onClick={handleNotificationClose}>No new notifications</MenuItem>

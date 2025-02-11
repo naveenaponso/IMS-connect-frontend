@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button, Container, Alert, MenuItem } from "@mui/material";
 import api from "../../services/api";
 
@@ -11,8 +11,8 @@ const IdeaForm = ({ onIdeaSubmitted }) => {
 
     const handleChange = (e) => setIdea({ ...idea, [e.target.name]: e.target.value });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    // Function to submit an idea to the server
+    const submitIdeaToServer = async (idea) => {
         try {
             const response = await api.post("/ideas/", idea);
             setMessage("Idea submitted successfully!");
@@ -22,6 +22,48 @@ const IdeaForm = ({ onIdeaSubmitted }) => {
             setError("Error submitting idea");
         }
     };
+
+    // Function to save an idea to localStorage
+    const saveIdeaToLocalStorage = (idea) => {
+        const offlineIdeas = JSON.parse(localStorage.getItem("offlineIdeas")) || [];
+        offlineIdeas.push(idea);
+        localStorage.setItem("offlineIdeas", JSON.stringify(offlineIdeas));
+        setMessage("Idea saved offline. It will be submitted when you are online.");
+        setIdea({ title: "", description: "", category: "" }); // Clear form
+    };
+
+    // Function to sync offline ideas when online
+    const syncOfflineIdeas = async () => {
+        const offlineIdeas = JSON.parse(localStorage.getItem("offlineIdeas")) || [];
+        if (offlineIdeas.length > 0 && navigator.onLine) {
+            for (const idea of offlineIdeas) {
+                await submitIdeaToServer(idea);
+            }
+            localStorage.removeItem("offlineIdeas"); // Clear offline ideas after syncing
+        }
+    };
+
+    // Handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (navigator.onLine) {
+            await submitIdeaToServer(idea);
+        } else {
+            saveIdeaToLocalStorage(idea);
+        }
+    };
+
+    // Sync offline ideas when the user comes back online
+    useEffect(() => {
+        const handleOnlineStatus = () => {
+            if (navigator.onLine) {
+                syncOfflineIdeas();
+            }
+        };
+
+        window.addEventListener("online", handleOnlineStatus);
+        return () => window.removeEventListener("online", handleOnlineStatus);
+    }, []);
 
     return (
         <Container maxWidth="sm">
